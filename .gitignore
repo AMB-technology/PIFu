@@ -1,1 +1,9 @@
 checkpoints/*
+
+.idea/
+
+*.DS_Store
+
+# Byte-compiled
+__pycache__/
+
