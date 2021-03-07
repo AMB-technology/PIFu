@@ -25,6 +25,7 @@ from lib.geometry import index
 # get options
 opt = BaseOptions().parse()
 
+
 def train_color(opt):
     # set cuda
     cuda = torch.device('cuda:%d' % opt.gpu_id)
@@ -98,7 +99,7 @@ def train_color(opt):
         outfile.write(json.dumps(vars(opt), indent=2))
 
     # training
-    start_epoch = 0 if not opt.continue_train else max(opt.resume_epoch,0)
+    start_epoch = 0 if not opt.continue_train else max(opt.resume_epoch, 0)
     for epoch in range(start_epoch, opt.num_epoch):
         epoch_start_time = time.time()
 
@@ -120,7 +121,8 @@ def train_color(opt):
 
             with torch.no_grad():
                 netG.filter(image_tensor)
-            resC, error = netC.forward(image_tensor, netG.get_im_feat(), color_sample_tensor, calib_tensor, labels=rgb_tensor)
+            resC, error = netC.forward(image_tensor, netG.get_im_feat(), color_sample_tensor, calib_tensor,
+                                       labels=rgb_tensor)
 
             optimizerC.zero_grad()
             error.backward()
@@ -186,6 +188,7 @@ def train_color(opt):
                         opt.results_path, opt.name, epoch, train_data['name'])
                     gen_mesh_color(opt, netG, netC, cuda, train_data, save_path)
                 train_dataset.is_train = True
+
 
 if __name__ == '__main__':
     train_color(opt)
