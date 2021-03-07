@@ -24,6 +24,7 @@ import tqdm
 # get options
 opt = BaseOptions().parse()
 
+
 class Evaluator:
     def __init__(self, opt, projection_mode='orthogonal'):
         self.opt = opt
@@ -108,16 +109,14 @@ class Evaluator:
 if __name__ == '__main__':
     evaluator = Evaluator(opt)
 
-    test_images = glob.glob(os.path.join(opt.test_folder_path, '*'))
-    test_images = [f for f in test_images if ('png' in f or 'jpg' in f) and (not 'mask' in f)]
-    test_masks = [f[:-4]+'_mask.png' for f in test_images]
-
+    test_images = sorted(glob.iglob(os.path.join(opt.test_folder_path, "*_overlay.png")))
+    test_masks = sorted(glob.iglob(os.path.join(opt.test_folder_path, '*_grabCutMask.png')))
     print("num; ", len(test_masks))
 
-    for image_path, mask_path in tqdm.tqdm(zip(test_images, test_masks)):
+    for index, (image_path, mask_path) in tqdm.tqdm(enumerate(zip(test_images, test_masks))):
         try:
             print(image_path, mask_path)
             data = evaluator.load_image(image_path, mask_path)
             evaluator.eval(data, True)
         except Exception as e:
-           print("error:", e.args)
+            print("error:", e.args)
