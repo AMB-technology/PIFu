@@ -16,10 +16,6 @@ MLP_DIM_COLOR='513 1024 512 256 128 3'
 # NOTE: one can change here to reconstruct mesh in a different resolution.
 VOL_RES=256
 
-CHECKPOINTS_NETG_PATH='./checkpoints/net_G'
-CHECKPOINTS_NETC_PATH='./checkpoints/net_C'
-
-
 in_path="$1";
 out_path="$2";
 
@@ -39,6 +35,4 @@ CUDA_VISIBLE_DEVICES=${GPU_ID} python ./apps/eval.py \
     --norm 'group' \
     --norm_color 'group' \
     --test_folder_path ${INPUT_PATH} \
-    --results_path ${OUT_PATH} \
-    --load_netG_checkpoint_path ${CHECKPOINTS_NETG_PATH} \
-    --load_netC_checkpoint_path ${CHECKPOINTS_NETC_PATH}
+    --results_path ${OUT_PATH}
