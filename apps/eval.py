@@ -24,6 +24,9 @@ import tqdm
 # get options
 opt = BaseOptions().parse()
 
+netG_path = "checkpoints/net_C"
+netC_path = "checkpoints/net_C"
+
 
 class Evaluator:
     def __init__(self, opt, projection_mode='orthogonal'):
@@ -42,12 +45,12 @@ class Evaluator:
         print('Using Network: ', netG.name)
 
         if opt.load_netG_checkpoint_path:
-            netG.load_state_dict(torch.load(opt.load_netG_checkpoint_path, map_location=cuda))
+            netG.load_state_dict(torch.load(netG_path, map_location=cuda))
 
         if opt.load_netC_checkpoint_path is not None:
-            print('loading for net C ...', opt.load_netC_checkpoint_path)
+            print('loading for net C ...', netC_path)
             netC = ResBlkPIFuNet(opt).to(device=cuda)
-            netC.load_state_dict(torch.load(opt.load_netC_checkpoint_path, map_location=cuda))
+            netC.load_state_dict(torch.load(netC_path, map_location=cuda))
         else:
             netC = None
 
@@ -109,9 +112,10 @@ class Evaluator:
 if __name__ == '__main__':
     evaluator = Evaluator(opt)
 
-    test_images = sorted(glob.iglob(os.path.join(opt.test_folder_path, "*_overlay.png")))
-    test_masks = sorted(glob.iglob(os.path.join(opt.test_folder_path, '*_grabCutMask.png')))
-    print("num; ", len(test_masks))
+    os.path.join(opt.test_folder_path)
+
+    test_images = sorted(glob.iglob(os.path.join(opt.test_folder_path + "*_overlay.png")))
+    test_masks = sorted(glob.iglob(os.path.join(opt.test_folder_path + '*_grabCutMask.png')))
 
     for index, (image_path, mask_path) in tqdm.tqdm(enumerate(zip(test_images, test_masks))):
         try:
