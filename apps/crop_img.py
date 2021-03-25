@@ -62,8 +62,8 @@ def main():
     given foreground mask, this script crops and resizes an input image and mask for processing.
     '''
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input_image', type=str, help='if the image has alpha channel, it will be used as mask')
-    parser.add_argument('-o', '--out_path', type=str, default='./sample_images')
+    parser.add_argument('--input_image', help='if the image has alpha channel, it will be used as mask')
+    parser.add_argument('--out_path', help='Cropped images will save to specified output directory')
     args = parser.parse_args()
 
     test_images = sorted(glob.iglob(args.input_image + "*_overlay.png"))
@@ -86,5 +86,5 @@ def main():
         cv2.imwrite(os.path.join(args.out_path, img_name + '.png'), img_new)
         cv2.imwrite(os.path.join(args.out_path, mask_name + '.png'), msk_new)
 
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()
