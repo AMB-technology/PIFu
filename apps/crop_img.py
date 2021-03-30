@@ -51,6 +51,7 @@ def process_img(img, msk, bbox=None):
     img = cv2.resize(img, (512, 512))
     msk = cv2.resize(msk, (512, 512))
 
+
     kernel = np.ones((3, 3), np.uint8)
     msk = cv2.erode((255 * (msk > 100)).astype(np.uint8), kernel, iterations=1)
 
